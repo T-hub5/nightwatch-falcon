@@ -1,0 +1,129 @@
+{
+  "status": "recovered",
+  "summary": "fixed=['silent_drop'] escalated=[] residual_unrecoverable_orders=34",
+  "trace": [
+    {
+      "step": 1,
+      "thought": "Observe: check conservation invariants (catches silent failures)",
+      "tool": "run_invariants",
+      "args": {},
+      "observation": {
+        "requests_accounted": {
+          "ok": false,
+          "violations": 34,
+          "detail": "received=300 5xx=0 orders=266"
+        },
+        "queue_conservation": {
+          "ok": true,
+          "violations": 0,
+          "detail": "produced=266 consumed=266 in_flight=0"
+        },
+        "payments_complete": {
+          "ok": true,
+          "violations": 0,
+          "detail": "orders=266 payments=266 pending_payment=0"
+        },
+        "ledger_matches_payments": {
+          "ok": true,
+          "violations": 0,
+          "detail": "payments_without_ledger_minus_inflight=0"
+        },
+        "warehouse_consistent": {
+          "ok": true,
+          "violations": 0,
+          "detail": "mismatched_rows=0"
+        },
+        "worker_liveness": {
+          "ok": true,
+          "violations": 0,
+          "detail": "consecutive_stalled_worker_runs=0"
+        }
+      },
+      "decision": ""
+    },
+    {
+      "step": 2,
+      "thought": "Observe: collect metrics",
+      "tool": "get_metrics",
+      "args": {},
+      "observation": {
+        "received": 300,
+        "produced": 266,
+        "consumed": 266,
+        "http_5xx": 0,
+        "queue_depth": 0,
+        "error_rate": 0.0
+      },
+      "decision": ""
+    },
+    {
+      "step": 3,
+      "thought": "Observe: scan recent error logs",
+      "tool": "get_logs",
+      "args": {},
+      "observation": {
+        "errors": 0,
+        "sample": []
+      },
+      "decision": ""
+    },
+    {
+      "step": 4,
+      "thought": "Hypothesize from invariant signatures",
+      "tool": "rank",
+      "args": {},
+      "observation": [
+        {
+          "cause": "silent_drop",
+          "score": 1.0,
+          "evidence": [
+            "requests_accounted"
+          ]
+        }
+      ],
+      "decision": "act on high-confidence causes first"
+    },
+    {
+      "step": 5,
+      "thought": "Remediate silent_drop (attempt 1)",
+      "tool": "rollback_config",
+      "args": {
+        "component": "api"
+      },
+      "observation": {
+        "changed": true,
+        "component": "api"
+      },
+      "decision": ""
+    },
+    {
+      "step": 6,
+      "thought": "Verify silent_drop: fresh traffic, count NEW invariant violations",
+      "tool": "verify_window",
+      "args": {
+        "names": [
+          "requests_accounted"
+        ]
+      },
+      "observation": {
+        "new_violations": {
+          "requests_accounted": 0
+        },
+        "exercised": {
+          "requests_accounted": 120
+        },
+        "inconclusive": false,
+        "stable": true
+      },
+      "decision": ""
+    },
+    {
+      "step": 7,
+      "thought": "silent_drop verified stable",
+      "tool": "decide",
+      "args": {},
+      "observation": {},
+      "decision": "close cause"
+    }
+  ]
+}

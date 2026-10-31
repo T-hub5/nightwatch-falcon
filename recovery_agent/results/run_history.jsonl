@@ -1,0 +1,6 @@
+{"run": 1, "time": "2026-10-31T18:56:41", "kinds": [], "fixed": [], "escalated": [], "lost": 0, "steps": 3, "baseline_false_healthy": false}
+{"run": 2, "time": "2026-10-31T18:56:42", "kinds": [], "fixed": [], "escalated": [], "lost": 0, "steps": 3, "baseline_false_healthy": false}
+{"run": 3, "time": "2026-10-31T18:56:47", "kinds": [], "fixed": [], "escalated": [], "lost": 0, "steps": 3, "baseline_false_healthy": false}
+{"run": 4, "time": "2026-10-31T18:56:48", "kinds": ["queue_loss"], "fixed": ["queue_loss"], "escalated": [], "lost": 0, "steps": 7, "baseline_false_healthy": true}
+{"run": 5, "time": "2026-10-31T18:57:22", "kinds": ["queue_loss"], "fixed": ["queue_loss"], "escalated": [], "lost": 0, "steps": 7, "baseline_false_healthy": true}
+{"run": 6, "time": "2026-10-31T18:58:31", "kinds": ["sync_corruption", "provider_down"], "fixed": [], "escalated": ["sync_corruption", "provider_down"], "lost": 0, "steps": 10, "baseline_false_healthy": false}

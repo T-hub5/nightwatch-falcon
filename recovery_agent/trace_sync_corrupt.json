@@ -1,0 +1,139 @@
+{
+  "status": "recovered",
+  "summary": "fixed=['sync_corruption'] escalated=[] residual_unrecoverable_orders=0",
+  "trace": [
+    {
+      "step": 1,
+      "thought": "Observe: check conservation invariants (catches silent failures)",
+      "tool": "run_invariants",
+      "args": {},
+      "observation": {
+        "requests_accounted": {
+          "ok": true,
+          "violations": 0,
+          "detail": "received=300 5xx=0 orders=300"
+        },
+        "queue_conservation": {
+          "ok": true,
+          "violations": 0,
+          "detail": "produced=300 consumed=300 in_flight=0"
+        },
+        "payments_complete": {
+          "ok": true,
+          "violations": 0,
+          "detail": "orders=300 payments=300 pending_payment=0"
+        },
+        "ledger_matches_payments": {
+          "ok": true,
+          "violations": 0,
+          "detail": "payments_without_ledger_minus_inflight=0"
+        },
+        "warehouse_consistent": {
+          "ok": false,
+          "violations": 54,
+          "detail": "mismatched_rows=54"
+        },
+        "worker_liveness": {
+          "ok": true,
+          "violations": 0,
+          "detail": "consecutive_stalled_worker_runs=0"
+        }
+      },
+      "decision": ""
+    },
+    {
+      "step": 2,
+      "thought": "Observe: collect metrics",
+      "tool": "get_metrics",
+      "args": {},
+      "observation": {
+        "received": 300,
+        "produced": 300,
+        "consumed": 300,
+        "http_5xx": 0,
+        "queue_depth": 0,
+        "error_rate": 0.0
+      },
+      "decision": ""
+    },
+    {
+      "step": 3,
+      "thought": "Observe: scan recent error logs",
+      "tool": "get_logs",
+      "args": {},
+      "observation": {
+        "errors": 0,
+        "sample": []
+      },
+      "decision": ""
+    },
+    {
+      "step": 4,
+      "thought": "Hypothesize from invariant signatures",
+      "tool": "rank",
+      "args": {},
+      "observation": [
+        {
+          "cause": "sync_corruption",
+          "score": 1.0,
+          "evidence": [
+            "warehouse_consistent"
+          ]
+        }
+      ],
+      "decision": "act on high-confidence causes first"
+    },
+    {
+      "step": 5,
+      "thought": "Remediate sync_corruption (attempt 1)",
+      "tool": "rollback_config",
+      "args": {
+        "component": "sync"
+      },
+      "observation": {
+        "changed": true,
+        "component": "sync"
+      },
+      "decision": ""
+    },
+    {
+      "step": 6,
+      "thought": "Remediate sync_corruption (attempt 1)",
+      "tool": "repair_warehouse",
+      "args": {},
+      "observation": {
+        "quarantined_and_resynced": 54
+      },
+      "decision": ""
+    },
+    {
+      "step": 7,
+      "thought": "Verify sync_corruption: fresh traffic, count NEW invariant violations",
+      "tool": "verify_window",
+      "args": {
+        "names": [
+          "warehouse_consistent"
+        ]
+      },
+      "observation": {
+        "new_violations": {
+          "warehouse_consistent": 0
+        },
+        "exercised": {
+          "warehouse_consistent": 26
+        },
+        "inconclusive": false,
+        "stable": true
+      },
+      "decision": ""
+    },
+    {
+      "step": 8,
+      "thought": "sync_corruption verified stable",
+      "tool": "decide",
+      "args": {},
+      "observation": {},
+      "decision": "close cause"
+    }
+  ]
+}

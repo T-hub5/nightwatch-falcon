@@ -1,0 +1,108 @@
+{
+  "status": "escalated",
+  "summary": "fixed=[] escalated=['provider_down'] residual_unrecoverable_orders=0",
+  "trace": [
+    {
+      "step": 1,
+      "thought": "Observe: check conservation invariants (catches silent failures)",
+      "tool": "run_invariants",
+      "args": {},
+      "observation": {
+        "requests_accounted": {
+          "ok": true,
+          "violations": 0,
+          "detail": "received=300 5xx=151 orders=300"
+        },
+        "queue_conservation": {
+          "ok": true,
+          "violations": 0,
+          "detail": "produced=149 consumed=149 in_flight=0"
+        },
+        "payments_complete": {
+          "ok": false,
+          "violations": 151,
+          "detail": "orders=300 payments=149 pending_payment=151"
+        },
+        "ledger_matches_payments": {
+          "ok": true,
+          "violations": 0,
+          "detail": "payments_without_ledger_minus_inflight=0"
+        },
+        "warehouse_consistent": {
+          "ok": true,
+          "violations": 0,
+          "detail": "mismatched_rows=0"
+        },
+        "worker_liveness": {
+          "ok": true,
+          "violations": 0,
+          "detail": "consecutive_stalled_worker_runs=0"
+        }
+      },
+      "decision": ""
+    },
+    {
+      "step": 2,
+      "thought": "Observe: collect metrics",
+      "tool": "get_metrics",
+      "args": {},
+      "observation": {
+        "received": 300,
+        "produced": 149,
+        "consumed": 149,
+        "http_5xx": 151,
+        "queue_depth": 0,
+        "error_rate": 0.503
+      },
+      "decision": ""
+    },
+    {
+      "step": 3,
+      "thought": "Observe: scan recent error logs",
+      "tool": "get_logs",
+      "args": {},
+      "observation": {
+        "errors": 151,
+        "sample": [
+          "payment provider timeout for ord_00298",
+          "payment provider timeout for ord_00299"
+        ]
+      },
+      "decision": ""
+    },
+    {
+      "step": 4,
+      "thought": "Hypothesize from invariant signatures",
+      "tool": "rank",
+      "args": {},
+      "observation": [
+        {
+          "cause": "provider_down",
+          "score": 1.0,
+          "evidence": [
+            "payments_complete"
+          ]
+        }
+      ],
+      "decision": "act on high-confidence causes first"
+    },
+    {
+      "step": 5,
+      "thought": "Logs show provider timeouts; test whether the dependency is healthy",
+      "tool": "check_provider",
+      "args": {},
+      "observation": {
+        "healthy": false
+      },
+      "decision": ""
+    },
+    {
+      "step": 6,
+      "thought": "External dependency; retrying/restarting cannot help",
+      "tool": "escalate",
+      "args": {},
+      "observation": {},
+      "decision": "escalate immediately (no retry loop)"
+    }
+  ]
+}

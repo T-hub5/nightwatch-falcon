@@ -1,0 +1,118 @@
+{
+  "code_hash": "267dfd2b41c7",
+  "table": {
+    "baseline|none": {
+      "n": 26,
+      "detect": 26.9,
+      "rootcause": 0.0,
+      "recovered": 0.0,
+      "correct": 0.0,
+      "false_claim": 73.1,
+      "harm": 0.0,
+      "steps": 2.3
+    },
+    "no_invariants|none": {
+      "n": 26,
+      "detect": 26.9,
+      "rootcause": 11.5,
+      "recovered": 0.0,
+      "correct": 11.5,
+      "false_claim": 73.1,
+      "harm": 0.0,
+      "steps": 3.8
+    },
+    "no_verification|none": {
+      "n": 26,
+      "detect": 100.0,
+      "rootcause": 100.0,
+      "recovered": 100.0,
+      "correct": 100.0,
+      "false_claim": 0.0,
+      "harm": 0.0,
+      "steps": 6.5
+    },
+    "full_agent|none": {
+      "n": 26,
+      "detect": 100.0,
+      "rootcause": 100.0,
+      "recovered": 100.0,
+      "correct": 100.0,
+      "false_claim": 0.0,
+      "harm": 0.0,
+      "steps": 7.7
+    },
+    "llm_agent|none": {
+      "n": 26,
+      "detect": 100.0,
+      "rootcause": 100.0,
+      "recovered": 100.0,
+      "correct": 100.0,
+      "false_claim": 0.0,
+      "harm": 0.0,
+      "steps": 7.7
+    },
+    "no_invariants|flaky_fix": {
+      "n": 130,
+      "detect": 26.9,
+      "rootcause": 11.5,
+      "recovered": 0.0,
+      "correct": 11.5,
+      "false_claim": 73.1,
+      "harm": 0.0,
+      "steps": 3.8,
+      "correct_sd": 0.0
+    },
+    "no_verification|flaky_fix": {
+      "n": 130,
+      "detect": 100.0,
+      "rootcause": 100.0,
+      "recovered": 41.7,
+      "correct": 48.5,
+      "false_claim": 42.3,
+      "harm": 0.0,
+      "steps": 6.5,
+      "correct_sd": 8.9
+    },
+    "full_agent|flaky_fix": {
+      "n": 130,
+      "detect": 100.0,
+      "rootcause": 100.0,
+      "recovered": 60.9,
+      "correct": 100.0,
+      "false_claim": 0.0,
+      "harm": 0.0,
+      "steps": 9.5,
+      "correct_sd": 0.0
+    },
+    "no_invariants|stuck_fix": {
+      "n": 26,
+      "detect": 26.9,
+      "rootcause": 11.5,
+      "recovered": 0.0,
+      "correct": 11.5,
+      "false_claim": 73.1,
+      "harm": 0.0,
+      "steps": 3.8
+    },
+    "no_verification|stuck_fix": {
+      "n": 26,
+      "detect": 100.0,
+      "rootcause": 100.0,
+      "recovered": 0.0,
+      "correct": 11.5,
+      "false_claim": 73.1,
+      "harm": 0.0,
+      "steps": 6.5
+    },
+    "full_agent|stuck_fix": {
+      "n": 26,
+      "detect": 100.0,
+      "rootcause": 100.0,
+      "recovered": 0.0,
+      "correct": 100.0,
+      "false_claim": 0.0,
+      "harm": 0.0,
+      "steps": 11.5
+    }
+  }
+}

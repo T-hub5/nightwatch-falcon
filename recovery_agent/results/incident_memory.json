@@ -1,0 +1,202 @@
+{
+  "stats": {
+    "silent_drop": {
+      "generic": {
+        "n": 1,
+        "ok": 1,
+        "steps": 3,
+        "harm": 0
+      },
+      "targeted": {
+        "n": 2,
+        "ok": 2,
+        "steps": 4,
+        "harm": 0
+      }
+    },
+    "queue_loss": {
+      "generic": {
+        "n": 1,
+        "ok": 1,
+        "steps": 4,
+        "harm": 1
+      },
+      "targeted": {
+        "n": 9,
+        "ok": 9,
+        "steps": 27,
+        "harm": 0
+      }
+    },
+    "hung_worker": {
+      "generic": {
+        "n": 1,
+        "ok": 1,
+        "steps": 4,
+        "harm": 0
+      },
+      "targeted": {
+        "n": 1,
+        "ok": 1,
+        "steps": 3,
+        "harm": 0
+      }
+    },
+    "sync_corruption": {
+      "generic": {
+        "n": 1,
+        "ok": 0,
+        "steps": 4,
+        "harm": 0
+      },
+      "targeted": {
+        "n": 4,
+        "ok": 0,
+        "steps": 12,
+        "harm": 0
+      }
+    }
+  },
+  "log": [
+    {
+      "cause": "silent_drop",
+      "strategy": "generic",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "generic",
+      "ok": true,
+      "steps": 4,
+      "harm": 1
+    },
+    {
+      "cause": "silent_drop",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 2,
+      "harm": 0
+    },
+    {
+      "cause": "hung_worker",
+      "strategy": "generic",
+      "ok": true,
+      "steps": 4,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "silent_drop",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 2,
+      "harm": 0
+    },
+    {
+      "cause": "hung_worker",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "sync_corruption",
+      "strategy": "generic",
+      "ok": false,
+      "steps": 4,
+      "harm": 0
+    },
+    {
+      "cause": "sync_corruption",
+      "strategy": "targeted",
+      "ok": false,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "sync_corruption",
+      "strategy": "targeted",
+      "ok": false,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "sync_corruption",
+      "strategy": "targeted",
+      "ok": false,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "queue_loss",
+      "strategy": "targeted",
+      "ok": true,
+      "steps": 3,
+      "harm": 0
+    },
+    {
+      "cause": "sync_corruption",
+      "strategy": "targeted",
+      "ok": false,
+      "steps": 3,
+      "harm": 0
+    }
+  ]
+}

@@ -1,0 +1,188 @@
+{
+  "status": "recovered",
+  "summary": "fixed=['silent_drop', 'sync_corruption'] escalated=[] residual_unrecoverable_orders=25",
+  "trace": [
+    {
+      "step": 1,
+      "thought": "Observe: check conservation invariants (catches silent failures)",
+      "tool": "run_invariants",
+      "args": {},
+      "observation": {
+        "requests_accounted": {
+          "ok": false,
+          "violations": 25,
+          "detail": "received=300 5xx=0 orders=275"
+        },
+        "queue_conservation": {
+          "ok": true,
+          "violations": 0,
+          "detail": "produced=275 consumed=275 in_flight=0"
+        },
+        "payments_complete": {
+          "ok": true,
+          "violations": 0,
+          "detail": "orders=275 payments=275 pending_payment=0"
+        },
+        "ledger_matches_payments": {
+          "ok": true,
+          "violations": 0,
+          "detail": "payments_without_ledger_minus_inflight=0"
+        },
+        "warehouse_consistent": {
+          "ok": false,
+          "violations": 53,
+          "detail": "mismatched_rows=53"
+        },
+        "worker_liveness": {
+          "ok": true,
+          "violations": 0,
+          "detail": "consecutive_stalled_worker_runs=0"
+        }
+      },
+      "decision": ""
+    },
+    {
+      "step": 2,
+      "thought": "Observe: collect metrics",
+      "tool": "get_metrics",
+      "args": {},
+      "observation": {
+        "received": 300,
+        "produced": 275,
+        "consumed": 275,
+        "http_5xx": 0,
+        "queue_depth": 0,
+        "error_rate": 0.0
+      },
+      "decision": ""
+    },
+    {
+      "step": 3,
+      "thought": "Observe: scan recent error logs",
+      "tool": "get_logs",
+      "args": {},
+      "observation": {
+        "errors": 0,
+        "sample": []
+      },
+      "decision": ""
+    },
+    {
+      "step": 4,
+      "thought": "Hypothesize from invariant signatures",
+      "tool": "rank",
+      "args": {},
+      "observation": [
+        {
+          "cause": "silent_drop",
+          "score": 1.0,
+          "evidence": [
+            "requests_accounted"
+          ]
+        },
+        {
+          "cause": "sync_corruption",
+          "score": 1.0,
+          "evidence": [
+            "warehouse_consistent"
+          ]
+        }
+      ],
+      "decision": "act on high-confidence causes first"
+    },
+    {
+      "step": 5,
+      "thought": "Remediate silent_drop (attempt 1)",
+      "tool": "rollback_config",
+      "args": {
+        "component": "api"
+      },
+      "observation": {
+        "changed": true,
+        "component": "api"
+      },
+      "decision": ""
+    },
+    {
+      "step": 6,
+      "thought": "Verify silent_drop: fresh traffic, count NEW invariant violations",
+      "tool": "verify_window",
+      "args": {
+        "names": [
+          "requests_accounted"
+        ]
+      },
+      "observation": {
+        "new_violations": {
+          "requests_accounted": 0
+        },
+        "exercised": {
+          "requests_accounted": 120
+        },
+        "inconclusive": false,
+        "stable": true
+      },
+      "decision": ""
+    },
+    {
+      "step": 7,
+      "thought": "silent_drop verified stable",
+      "tool": "decide",
+      "args": {},
+      "observation": {},
+      "decision": "close cause"
+    },
+    {
+      "step": 8,
+      "thought": "Remediate sync_corruption (attempt 1)",
+      "tool": "rollback_config",
+      "args": {
+        "component": "sync"
+      },
+      "observation": {
+        "changed": true,
+        "component": "sync"
+      },
+      "decision": ""
+    },
+    {
+      "step": 9,
+      "thought": "Remediate sync_corruption (attempt 1)",
+      "tool": "repair_warehouse",
+      "args": {},
+      "observation": {
+        "quarantined_and_resynced": 59
+      },
+      "decision": ""
+    },
+    {
+      "step": 10,
+      "thought": "Verify sync_corruption: fresh traffic, count NEW invariant violations",
+      "tool": "verify_window",
+      "args": {
+        "names": [
+          "warehouse_consistent"
+        ]
+      },
+      "observation": {
+        "new_violations": {
+          "warehouse_consistent": 0
+        },
+        "exercised": {
+          "warehouse_consistent": 26
+        },
+        "inconclusive": false,
+        "stable": true
+      },
+      "decision": ""
+    },
+    {
+      "step": 11,
+      "thought": "sync_corruption verified stable",
+      "tool": "decide",
+      "args": {},
+      "observation": {},
+      "decision": "close cause"
+    }
+  ]
+}

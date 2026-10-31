@@ -1,0 +1,25 @@
+{
+  "allowed_tools": [
+    "check_provider",
+    "drain_queue",
+    "escalate",
+    "get_logs",
+    "get_metrics",
+    "repair_warehouse",
+    "replay_messages",
+    "restart_service",
+    "rollback_config",
+    "run_invariants",
+    "verify_window"
+  ],
+  "max_steps": 30,
+  "max_fix_attempts": 2,
+  "rules": [
+    "Only allowlisted tools can be called; anything else is blocked and logged",
+    "At most 30 tool calls per incident",
+    "At most 2 fix attempts per cause, then it escalates",
+    "Problems outside our control, like a payment provider outage, are escalated at once and never retried",
+    "A fix counts only if fresh traffic proves it; otherwise it escalates",
+    "Lost orders are reported as lost and never claimed as restored"
+  ]
+}
